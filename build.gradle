@@ -12,7 +12,7 @@ apply plugin: 'maven'
 apply plugin: 'signing'
 apply plugin: 'codenarc'
 
-version = '2.0.0-SNAPSHOT'
+version = '2.0.0-PROXY-SNAPSHOT'
 group = 'com.github.groovy-wslite'
 
 sourceCompatibility = 1.7
@@ -65,6 +65,12 @@ task integrationTest(type: Test) {
 tasks.withType(CodeNarc) {
     ignoreFailures = true
     configFile = file("$rootProject.projectDir/config/codenarc/codenarc.groovy")
+}
+
+[test, integrationTest].each { runTask ->
+    configure(runTask) {
+        systemProperties System.properties
+    }
 }
 
 build.dependsOn integrationTest
